@@ -1,6 +1,7 @@
 import { Container } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createContext, useState } from "react";
+import AppModal from "./AppModal";
 import TaskList from "./TaskList";
 
 export const CtxTasks = createContext({ bucket: [] });
@@ -15,6 +16,7 @@ function App() {
         <Container maxWidth="sm">
           <TaskList />
         </Container>
+        <AppModal />
       </CtxTasks.Provider>
     </>
   );
