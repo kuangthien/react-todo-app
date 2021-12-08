@@ -6,7 +6,7 @@ import TaskList from "./TaskList";
 import TaskUpsert from "./TaskUpsert";
 import axios from "axios";
 
-export const CtxTasks = createContext({ bucket: [] });
+export const CtxTasks = createContext({ bucket: [], upsertId: undefined });
 export const CtxAppModal = createContext({});
 
 const fetchExistedTasks = async () => {
@@ -19,6 +19,7 @@ const fetchExistedTasks = async () => {
 
 function App() {
   const [bucket, setBucket] = useState([]);
+  const [upsertId, setUpsertId] = useState();
   const [openModal, setOpenModal] = useState(false);
 
   const getTaskListFromServer = async () => {
@@ -37,7 +38,7 @@ function App() {
   return (
     <>
       <style>{`body  {background: #f2f2f2}`}</style>
-      <CtxTasks.Provider value={{ bucket }}>
+      <CtxTasks.Provider value={{ bucket, upsertId, setUpsertId, setBucket }}>
         <CtxAppModal.Provider value={{ openModal, setOpenModal }}>
           <CssBaseline />
           <Container maxWidth="sm">

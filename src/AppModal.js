@@ -20,11 +20,14 @@ function AppModal({ childContent }) {
   const { openModal: open, setOpenModal: setOpen } = useContext(CtxAppModal);
   const handleClose = () => setOpen(false);
 
+  // IMPORTANT: => try to avoid unnecessery render in this VERY SPECIAL case
+  if (!open) return null;
+
   const ChildContent = childContent;
   return (
     <div>
       <Modal
-        open={open}
+        open={true}
         onClose={handleClose}
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"

@@ -8,19 +8,22 @@ import { CtxAppModal, CtxTasks } from "./App";
 import { useContext } from "react";
 
 export default function Task({ id }) {
-  const ctxTaskUpsert = useContext(CtxAppModal);
-  const ctxTasks = useContext(CtxTasks);
+  const { setOpenModal } = useContext(CtxAppModal);
+  const { setUpsertId, bucket } = useContext(CtxTasks);
 
-  const handleClickEdit = ctxTaskUpsert.setOpenModal;
+  const handleClickEdit = (taskId) => {
+    setOpenModal(true);
+    setUpsertId(taskId);
+  };
 
   // concern => should we pass down whole object as props of Task?
-  const objTask = ctxTasks.bucket.find((o) => o.id === id);
+  const objTask = bucket.find((o) => o.id === id);
   const { title, body: desc } = objTask;
   return (
     <Card sx={{ minWidth: 275, mx: 2, my: 2 }}>
       <CardContent>
         <Box sx={{ textAlign: "right" }}>
-          <Button size="small" onClick={handleClickEdit}>
+          <Button size="small" onClick={() => handleClickEdit(id)}>
             Edit
           </Button>
         </Box>
