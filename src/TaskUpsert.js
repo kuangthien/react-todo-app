@@ -5,7 +5,7 @@ import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
 import DialogTitle from "@mui/material/DialogTitle";
 import { CtxAppModal, CtxTasks } from "./App";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Divider } from "@mui/material";
 import { Box } from "@mui/system";
 
@@ -15,18 +15,52 @@ function TaskUpsert() {
 
   const { setOpenModal } = useContext(CtxAppModal);
   const { bucket, upsertId, setUpsertId, setBucket } = useContext(CtxTasks);
+  const [isAbleToSubmit, setIsAbleToSubmit] = useState();
+
+  const existedObj = bucket.find((o) => o.id === upsertId);
 
   const handleClose = () => {
     setOpenModal(false);
     setUpsertId(undefined);
   };
+
+  const isValidated = () => {
+    let rs = true;
+    //     A/C: The save button should not be enabled unless or
+    // until any new changes are updated in any of the
+    // input field.
+    const latest = getPreSubmitObj();
+
+    if (JSON.stringify(latest) === JSON.stringify(existedObj)) rs = false;
+
+    // A/C: Same title name should not be used more than once.
+    if (bucket.find((o) => o.title === latest.title)) rs = false;
+
+    return rs;
+  };
+
+  const checkPreSubmit = () => {
+    const lgtm = isValidated();
+    setIsAbleToSubmit(lgtm);
+  };
+
+  const getPreSubmitObj = () => {
+    const newObj = {
+      ...existedObj,
+      title: refTitle.current.value,
+      body: refBody.current.value,
+    };
+    return newObj;
+  };
+
   const handleSubmit = () => {
-    const newObj = {};
-    newObj.title = refTitle.current.value;
-    newObj.body = refBody.current.value;
+    if (!isValidated()) {
+      return;
+    }
+    const newObj = getPreSubmitObj();
 
     const newBucket = bucket.map((o) => {
-      if (o.id === upsertId) return { ...o, ...newObj };
+      if (o.id === upsertId) return newObj;
       return o;
     });
     setBucket(newBucket);
@@ -60,6 +94,7 @@ function TaskUpsert() {
               fullWidth
               inputRef={refTitle}
               defaultValue={title}
+              onChange={checkPreSubmit}
             />
 
             <TextField
@@ -71,11 +106,16 @@ function TaskUpsert() {
               inputRef={refBody}
               defaultValue={body}
               multiline
+              onChange={checkPreSubmit}
             />
 
             <Box sx={{ paddingTop: 2, textAlign: "right" }}>
               <Button onClick={handleClose}>Cancel</Button>
-              <Button type="submit" variant="contained">
+              <Button
+                type="submit"
+                variant="contained"
+                disabled={!isAbleToSubmit}
+              >
                 Save
               </Button>
             </Box>
