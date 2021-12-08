@@ -2,9 +2,9 @@ import { Container } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createContext, useEffect, useState } from "react";
 import AppModal from "./AppModal";
-import TaskList from "./TaskList";
-import TaskUpsert from "./TaskUpsert";
 import axios from "axios";
+import TaskList from "./Tasks/TaskList";
+import TaskUpsert from "./Tasks/TaskUpsert";
 
 export const CtxTasks = createContext({ bucket: [], upsertId: undefined });
 export const CtxAppModal = createContext({});
