@@ -1,9 +1,8 @@
-import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
 import { CtxAppModal } from "./App";
+import { useContext } from "react";
 
 const style = {
   position: "absolute",
@@ -18,15 +17,12 @@ const style = {
 };
 
 function AppModal({ childContent }) {
-  const { openModal: open, setOpenModal: setOpen } =
-    React.useContext(CtxAppModal);
-  const handleOpen = () => setOpen(true);
+  const { openModal: open, setOpenModal: setOpen } = useContext(CtxAppModal);
   const handleClose = () => setOpen(false);
 
   const ChildContent = childContent;
   return (
     <div>
-      <Button onClick={handleOpen}>Open modal</Button>
       <Modal
         open={open}
         onClose={handleClose}
