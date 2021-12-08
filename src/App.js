@@ -3,6 +3,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { createContext, useState } from "react";
 import AppModal from "./AppModal";
 import TaskList from "./TaskList";
+import TaskUpsert from "./TaskUpsert";
 
 export const CtxTasks = createContext({ bucket: [] });
 export const CtxAppModal = createContext({});
@@ -20,20 +21,7 @@ function App() {
           <Container maxWidth="sm">
             <TaskList />
           </Container>
-          <AppModal
-            childContent={() => {
-              <>
-                {" "}
-                <Typography id="modal-modal-title" variant="h6" component="h2">
-                  Text in a modal
-                </Typography>
-                <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-                  Duis mollis, est non commodo luctus, nisi erat porttitor
-                  ligula.
-                </Typography>
-              </>;
-            }}
-          />
+          <AppModal childContent={() => <TaskUpsert />} />
         </CtxAppModal.Provider>
       </CtxTasks.Provider>
     </>
