@@ -1,16 +1,38 @@
-import { Container, Typography } from "@mui/material";
+import { Container } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import AppModal from "./AppModal";
 import TaskList from "./TaskList";
 import TaskUpsert from "./TaskUpsert";
+import axios from "axios";
 
 export const CtxTasks = createContext({ bucket: [] });
 export const CtxAppModal = createContext({});
 
+const fetchExistedTasks = async () => {
+  try {
+    const rs = (await axios.get("https://jsonplaceholder.typicode.com/posts"))
+      .data;
+    return rs;
+  } catch (error) {}
+};
+
 function App() {
-  const [bucket] = useState([...Array(3)]);
+  const [bucket, setBucket] = useState([]);
   const [openModal, setOpenModal] = useState(false);
+
+  const getTaskListFromServer = async () => {
+    const data = await fetchExistedTasks();
+    if (!data) return;
+    // manipulate BE data:
+    const refinedData = data;
+    // transform to bucket:
+    setBucket(refinedData);
+  };
+
+  useEffect(() => {
+    getTaskListFromServer();
+  }, []);
 
   return (
     <>
