@@ -41,7 +41,7 @@ function App() {
       <CtxTasks.Provider value={{ bucket, upsertId, setUpsertId, setBucket }}>
         <CtxAppModal.Provider value={{ openModal, setOpenModal }}>
           <CssBaseline />
-          <h1>Todo App</h1>
+          <h1 style={{ textAlign: "center" }}>Todo App</h1>
           <Container maxWidth="sm">
             <TaskList />
           </Container>
